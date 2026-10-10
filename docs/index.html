@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Explore LearningOS: preserve your notes, clarify understanding, verify sources and write only when requested.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<title>LearningOS · From notes to understanding</title>
+<style>
+:root{color-scheme:light;--paper:#f5f3ec;--ink:#202d28;--muted:#53635b;--line:#c9d0c6;--green:#205a40;--wash:#e6ecdf;--white:#fffef9}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:"Avenir Next",Avenir,"Segoe UI",sans-serif;font-size:16px;line-height:1.55}header,main,footer{max-width:1240px;margin:auto;padding:30px 36px}header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}a{color:var(--green)}header a{font-weight:600}button,input{font:inherit}button{min-height:44px;cursor:pointer;border:1px solid var(--line);background:var(--white);color:var(--ink);border-radius:6px;padding:9px 16px}button:hover{background:var(--wash)}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--green);outline-offset:4px}button:disabled{opacity:.45;cursor:default}.brand{font-size:22px;font-weight:700;letter-spacing:-1px}.eyebrow{font:12px ui-monospace,monospace;text-transform:uppercase;letter-spacing:2px;color:var(--muted)}h1{font:clamp(32px,5vw,62px)/1.08 Georgia,serif;letter-spacing:-1.6px;max-width:800px;margin:18px 0}h2{font:32px/1.2 Georgia,serif;margin:12px 0}h3{font-size:15px;margin:20px 0 6px}p{margin:10px 0}.intro{max-width:770px;color:var(--muted);font-size:18px}.options{display:flex;gap:12px 28px;flex-wrap:wrap;padding:20px 0 26px}.options label{display:flex;gap:10px;align-items:center;min-height:44px;cursor:pointer}.options input{accent-color:var(--green);width:19px;height:19px}.workspace{display:grid;grid-template-columns:280px 1fr;gap:30px;border-top:1px solid var(--line);padding-top:28px}.rail{display:flex;flex-direction:column;gap:7px}.step{display:flex;gap:13px;align-items:center;text-align:left;background:transparent;width:100%;border-color:transparent}.step[aria-current="step"]{background:var(--green);color:white}.step .number{font:12px ui-monospace,monospace;opacity:.8}.step small{display:block;font-size:11px;opacity:.8}.detail{background:var(--white);border:1px solid var(--line);padding:30px 34px;border-radius:8px;min-width:0}.progress{display:flex;justify-content:space-between;gap:16px;align-items:center;color:var(--muted);font-size:13px}.badge{background:var(--wash);border-radius:4px;padding:4px 10px;font-size:12px;color:var(--green)}.summary{font-size:18px;max-width:700px}.example{border-top:1px solid var(--line);margin-top:25px;padding-top:22px}.quote{font:19px/1.5 Georgia,serif}.gate{border:1px dashed var(--green);padding:14px 18px;margin-top:22px;background:var(--wash)}.nav{display:flex;justify-content:space-between;gap:12px;margin-top:30px}.principle{display:grid;grid-template-columns:280px 1fr;gap:30px;margin-top:32px;padding-top:25px;border-top:1px solid var(--line)}.principle p{max-width:760px;color:var(--muted)}footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);margin-top:35px}.status{color:var(--muted);font-size:13px;margin:5px 0 20px}noscript{display:block;padding:20px;background:var(--wash)}@media(max-width:740px){header,main,footer{padding:22px 18px}.workspace,.principle{grid-template-columns:1fr;gap:20px}.rail{display:grid;grid-template-columns:1fr 1fr}.detail{padding:24px 20px}.options{gap:8px 18px}.brand{font-size:20px}.progress{align-items:flex-start}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header><span class="brand">LearningOS<span aria-hidden="true"> /</span></span><a href="https://github.com/AjayAdsule/learningos-skill">Read the skill on GitHub ↗</a></header>
+<main>
+<div class="eyebrow">An open learning workflow · Interactive field guide</div>
+<h1>Keep your words.<br>Build your understanding.</h1>
+<p class="intro">Follow one idea from raw notes to a recall check. Click a stage to inspect its input, action and result. Mapping and writing are optional—not automatic outputs.</p>
+<div class="options" role="group" aria-label="Optional workflow branches">
+<label><input type="checkbox" id="map-option"> Request a mind map</label>
+<label><input type="checkbox" id="write-option"> Request an article draft</label>
+<label><input type="checkbox" id="publish-option"> Approve final content &amp; destination</label>
+</div>
+<p class="status" id="branch-status"></p>
+<div class="workspace">
+<nav class="rail" id="steps" aria-label="Workflow stages"></nav>
+<article class="detail" aria-labelledby="stage-title">
+<div class="progress"><span id="position"></span><span class="badge" id="stage-kind"></span></div>
+<div id="stage-content" aria-live="polite" aria-atomic="true">
+<h2 id="stage-title"></h2><p class="summary" id="stage-summary"></p>
+<h3>What comes in</h3><p id="stage-input"></p>
+<h3>What the companion does</h3><p id="stage-action"></p>
+<h3>What you leave with</h3><p id="stage-output"></p>
+<div class="example"><div class="eyebrow">Fictional worked example · Active recall</div><p class="quote" id="stage-example"></p></div>
+<div class="gate"><strong>Completion / permission check</strong><p id="stage-gate"></p></div>
+</div>
+<div class="nav"><button id="previous" type="button">← Previous</button><button id="next" type="button">Next stage →</button></div>
+</article>
+</div>
+<section class="principle"><h2>The loop stays yours.</h2><div><p>Original notes, verified claims, assistant explanations and personal reflections remain distinct. A review can send you back to clarification; it is not a test of how confident you feel.</p><p>This is an explainer, not a working note app or publisher. Its controls do not save notes, contact integrations or publish anything. There are no analytics, remote scripts, fonts or data submissions.</p><p>The skill itself runs inside Hermes. Your chosen model provider and external tools may receive content during real use. Keep notes and private integration settings outside the public repository.</p></div></section>
+<noscript>The interactive stages require JavaScript. Read the complete static flow and stage explanations in the repository README instead.</noscript>
+</main>
+<footer>Created by Ajay A Adsule · MIT licensed · No private notes in this example.</footer>
+<script id="workflow-script">
+const stages = {
+ capture:{id:'capture',title:'Capture',kind:'Core',summary:'Preserve what you said before anyone improves it.',input:'Raw explanation, a source reference, or an original upload.',action:'Save exact wording and uncertainty. Keep uploads separate; label any transcription and unclear text.',output:'A recoverable original, separate from the organized note.',example:'Original: “i think rereading means i know it but i forget when the book is closed.”',gate:'The original wording is unchanged. No invented source details or personal reflections.'},
+ clarify:{id:'clarify',title:'Clarify',kind:'Core',summary:'Find the gap with one useful question at a time.',input:'Your actual interpretation and what feels confusing.',action:'Check what is right, explain misconceptions and ask up to three adaptive questions, one at a time. Invite a teach-back.',output:'A clearer explanation and a record of remaining confusion.',example:'Question: “With the book closed, how would you explain the idea to someone else?”',gate:'The next question responds to your answer. Confidence is not treated as proof of understanding.'},
+ verify:{id:'verify',title:'Verify sources',kind:'Core',summary:'Do not turn a recollection into an author’s claim.',input:'Accessible source text plus the learner’s notes.',action:'Separate source claims, interpretation, opinion and assistant explanation. Check attributed claims against real evidence.',output:'Verified claims with references—or an honest “unverified” label.',example:'Without the source text, “the author recommends daily testing” remains unverified. The guide does not invent a citation.',gate:'No source access means no verified author claim. Hypothetical examples remain labeled.'},
+ connect:{id:'connect',title:'Connect',kind:'Core',summary:'Build links to things you actually learned.',input:'The clarified topic and a searchable set of prior notes.',action:'Retrieve older notes before linking. Explain similarities and differences; label speculative relationships.',output:'Real links to prior learning, or “no related notes found.”',example:'If a prior note about retrieval practice is actually found, link it. Otherwise do not pretend that note exists.',gate:'Every prior-note link resolves to a retrieved note. A possible connection is not presented as established.'},
+ organize:{id:'organize',title:'Organize',kind:'Core',summary:'Give the note structure without rewriting your perspective.',input:'The preserved original, clarification, evidence and connections.',action:'Fill the structured template. Keep original words and personal reflections separate from assistant explanations.',output:'A note with metadata and the prescribed sections.',example:'“What I Understood” records the learner’s real answer. “Questions and Confusion” keeps unresolved gaps visible.',gate:'Unknown metadata is “not provided.” All template sections are kept in order.'},
+ save:{id:'save',title:'Save privately',kind:'Core',summary:'A real file is better than an imaginary successful sync.',input:'The organized note and your privately configured destination.',action:'Save versioned local Markdown. If requested, write to the exact external target and read it back.',output:'A real local path; a verified remote note or a clearly marked sync failure.',example:'If Notion is unavailable, save a local backup and say “sync pending”—not “saved to Notion.”',gate:'Originals are not overwritten. Remote title, parent and content are verified after each write.'},
+ map:{id:'map',title:'Make a mind map',kind:'Optional · requested',summary:'See the relationships, only when you ask.',input:'A requested map and supported concepts from the note.',action:'Create Mermaid mindmap source. Render and inspect SVG or PNG only if a renderer is available.',output:'Versioned .mmd source and, when verified, a viewable render.',example:'Active recall → explain without notes → identify gaps → revisit concepts. This is a hypothetical map, not a new research claim.',gate:'Rendering is not claimed until the actual artifact has been inspected.'},
+ draft:{id:'draft',title:'Draft an article',kind:'Optional · requested',summary:'Turn real understanding into a draft—not a manufactured voice.',input:'An explicit drafting request, source notes and your actual perspective.',action:'Suggest five titles and three subtitles; write supported sections, examples and a conclusion. Edit without inventing experience.',output:'Versioned copy-ready Markdown. Status stays Draft until publication is confirmed.',example:'A first-person draft may use the learner’s stated experience of forgetting after rereading, but cannot invent a dramatic personal story.',gate:'Requested drafting is not permission to publish. Missing perspectives require clarification, not invention.'},
+ publish:{id:'publish',title:'Publish with approval',kind:'Optional · approval gate',summary:'The last word belongs to the writer.',input:'Explicit approval of the final content and exact destination.',action:'Use only a verified publishing integration, or provide Markdown for manual publication. Check the actual URL before claiming publication.',output:'A verified or clearly user-confirmed URL; otherwise the draft remains unpublished.',example:'“Draft this” does not authorize publication. A Published label alone does not prove an article is live.',gate:'This checkbox illustrates permission only. It does not authorize or perform any real publication.'},
+ review:{id:'review',title:'Review & revisit',kind:'On request',summary:'Recall reveals what reading alone cannot show.',input:'A learning-review request and retrieved studied topics.',action:'Ask one recall question at a time without rereading notes. Diagnose gaps from answers and revisit them.',output:'Evidence of understanding, remaining gaps and a targeted next learning step.',example:'“Explain active recall without opening your notes. What would you do when you cannot retrieve an idea?”',gate:'Learning is not inferred from confidence or fluency. Return to Clarify when an answer exposes a gap.'}
+};
+function buildJourney(options = {}) {
+ const ids = ['capture','clarify','verify','connect','organize','save'];
+ if(options.map) ids.push('map');
+ if(options.write) ids.push('draft');
+ if(options.write && options.publish) ids.push('publish');
+ ids.push('review');
+ return ids.map(id => stages[id]);
+}
+if(typeof module !== 'undefined') module.exports = {buildJourney,stages};
+if(typeof document !== 'undefined') {
+ let current = 'capture';
+ const el = id => document.getElementById(id);
+ const choices = () => ({map:el('map-option').checked,write:el('write-option').checked,publish:el('publish-option').checked});
+ function render() {
+  el('publish-option').disabled = !el('write-option').checked;
+  if(!el('write-option').checked) el('publish-option').checked = false;
+  const journey = buildJourney(choices());
+  if(!journey.some(s => s.id === current)) current = 'capture';
+  const index = journey.findIndex(s => s.id === current), stage = journey[index];
+  el('steps').replaceChildren();
+  journey.forEach((s,i) => {
+   const button=document.createElement('button');button.type='button';button.className='step';button.dataset.stage=s.id;
+   const number=document.createElement('span');number.className='number';number.textContent=String(i+1).padStart(2,'0');
+   const label=document.createElement('span');label.textContent=s.title;
+   const kind=document.createElement('small');kind.textContent=s.kind;label.append(kind);button.append(number,label);
+   if(s.id===current) button.setAttribute('aria-current','step');
+   button.addEventListener('click',()=>{current=s.id;render();el('steps').querySelector('[aria-current="step"]').focus();});
+   el('steps').append(button);
+  });
+  ['title','summary','input','action','output','example','gate','kind'].forEach(key=>el('stage-'+key).textContent=stage[key]);
+  el('position').textContent='Stage '+(index+1)+' of '+journey.length;
+  el('previous').disabled=index===0;el('next').disabled=index===journey.length-1;
+  el('branch-status').textContent='Choose a stage to explore. Review is performed only when requested.';
+ }
+ function advance(delta){const journey=buildJourney(choices()),index=journey.findIndex(s=>s.id===current);current=journey[Math.max(0,Math.min(journey.length-1,index+delta))].id;render();}
+ el('previous').addEventListener('click',()=>advance(-1));el('next').addEventListener('click',()=>advance(1));
+ ['map-option','write-option','publish-option'].forEach(id=>el(id).addEventListener('change',render));
+ render();
+}
+</script>
+</body>
+</html>
